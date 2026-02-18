@@ -9,6 +9,15 @@ class Course(models.Model):
         return self.title
 
 
+class Lesson(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+
 class Enrollment(models.Model):
     student_name = models.CharField(max_length=200)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -26,9 +35,12 @@ class Question(models.Model):
         return "Question: " + self.content
 
     def is_get_score(self, selected_ids):
-        all_answers = self.choice_set.filter(is_correct=True).count()
-        selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
-        return all_answers == selected_correct
+        correct_count = self.choice_set.filter(is_correct=True).count()
+        selected_correct = self.choice_set.filter(
+            is_correct=True,
+            id__in=selected_ids
+        ).count()
+        return correct_count == selected_correct
 
 
 class Choice(models.Model):
