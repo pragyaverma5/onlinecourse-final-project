@@ -24,6 +24,8 @@ class Submission(models.Model):
 
     def __str__(self):
         return f"Submission for {self.question}"
+
+
 class Lesson(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
